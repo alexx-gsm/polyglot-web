@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    container_name: pgw-client
+    command: serve -s build -l 3000
+    restart: unless-stopped
+    networks:
+      - pgw-network
+
+  # api:
+  #   build: ./api
+  #   container_name: vkda-api
+  #   command: npm run start
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - api_db
+  #   networks:
+  #     - vkda-network
+
+  # api_db:
+  #   image: mongo:latest
+  #   container_name: vkda-db
+  #   volumes:
+  #     - mongodb_api:/data/db
+  #   networks:
+  #     - vkda-network
+
+  # nginx:
+  #   image: nginx:stable-alpine
+  #   container_name: vkda-nginx
+  #   ports:
+  #     - '80:80'
+  #   volumes:
+  #     - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+  #   depends_on:
+  #     - api
+  #     - frontend
+  #   networks:
+  #     - vkda-network
+
+# volumes:
+#   mongodb_api:
+
+networks:
+  pgw-network:
+    driver: bridge
